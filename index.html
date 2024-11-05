@@ -25,6 +25,7 @@
             border-radius: 8px;
             margin-bottom: 20px;
             object-fit: cover;
+            display: none; /* Initially hidden until loaded */
         }
 
         .buttons {
@@ -70,7 +71,7 @@
     <div class="container">
         <h1>Is this a real person or AI generated?</h1>
         <div id="loadingMessage">Loading...</div>
-        <img id="personImage" src="" alt="Person" style="display: none;"/>
+        <img id="personImage" src="" alt="Person" />
         <div class="buttons">
             <button onclick="makeGuess('real')">Real</button>
             <button onclick="makeGuess('ai')">AI-generated</button>
@@ -86,31 +87,36 @@
             // Randomly decide if this is a real or AI-generated image
             isAIGenerated = Math.random() < 0.5;
 
-            // Use real or AI image sources here
-            const imageUrl = isAIGenerated 
-                ? 'https://thispersondoesnotexist.com/' 
-                : 'https://randomuser.me/api/portraits/men/1.jpg'; // Example for real images
             const imgElement = document.getElementById('personImage');
-
-            // Display loading message
-            document.getElementById('loadingMessage').style.display = "block";
-            imgElement.style.display = "none";
+            const loadingMessage = document.getElementById('loadingMessage');
             
-            // Load image with a slight CSS crop if it's AI-generated
-            imgElement.style.clipPath = isAIGenerated ? "inset(10% 10% 10% 10%)" : "none";
+            // Set image source based on AI or real selection
+            let imageUrl;
+            if (isAIGenerated) {
+                imageUrl = 'https://thispersondoesnotexist.com/';
+                imgElement.style.clipPath = "inset(10% 10% 10% 10%)"; // Crop for AI image
+            } else {
+                const randomNum = Math.floor(Math.random() * 100) + 1; // Random number between 1 and 100
+                imageUrl = `https://randomuser.me/api/portraits/men/${randomNum}.jpg`;
+                imgElement.style.clipPath = "none"; // No crop for real image
+            }
+            
+            // Display loading message
+            loadingMessage.style.display = "block";
+            imgElement.style.display = "none";
             imgElement.src = imageUrl;
 
             // Reset UI elements
             document.getElementById('result').textContent = "";
             document.getElementById('nextButton').style.display = "none";
 
-            // Wait for image to load, then remove loading message
+            // Wait for image to load, then hide loading message
             imgElement.onload = () => {
-                document.getElementById('loadingMessage').style.display = "none";
+                loadingMessage.style.display = "none";
                 imgElement.style.display = "block";
             };
             imgElement.onerror = () => {
-                document.getElementById('loadingMessage').textContent = "Failed to load image. Please try again.";
+                loadingMessage.textContent = "Failed to load image. Please try again.";
             };
         }
 
