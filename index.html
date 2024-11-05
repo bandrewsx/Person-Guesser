@@ -100,12 +100,12 @@
             // Set image source based on AI or real selection
             let imageUrl;
             if (isAIGenerated) {
-                imageUrl = 'https://thispersondoesnotexist.com/image';
+                imageUrl = 'https://thispersondoesnotexist.com/'; // Corrected URL for AI images
                 imgElement.style.clipPath = "inset(10% 10% 10% 10%)"; // Slight crop for AI image
                 imgElement.style.borderRadius = "20px"; // Rounded corners for AI image
             } else {
-                const randomNum = Math.floor(Math.random() * 100) + 1; // Random number between 1 and 100
-                imageUrl = `https://randomuser.me/api/portraits/men/${randomNum}.jpg`;
+                const randomNum = Math.floor(Math.random() * 99) + 1; // Random number between 1 and 99
+                imageUrl = `https://xsgames.co/randomusers/assets/avatars/male/${randomNum}.jpg`; // Higher resolution human image source
                 imgElement.style.clipPath = "none"; // No crop for real image
                 imgElement.style.borderRadius = "0"; // Square corners for real image
             }
