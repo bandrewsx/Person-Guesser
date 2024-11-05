@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real or AI?</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        #personImage {
+            width: 300px;
+            height: 300px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        
+        #nextButton {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Is this a real person or AI generated?</h1>
+        <img id="personImage" src="" alt="Person" />
+        <div class="buttons">
+            <button onclick="makeGuess('real')">Real</button>
+            <button onclick="makeGuess('ai')">AI-generated</button>
+        </div>
+        <div id="result"></div>
+        <button id="nextButton" onclick="nextImage()">Next Image</button>
+    </div>
+
+    <script>
+        let isAIGenerated = false;
+
+        function loadImage() {
+            // Randomly decide if this is a real or AI-generated image
+            isAIGenerated = Math.random() < 0.5;
+
+            const imageUrl = 'https://thispersondoesnotexist.com/image';
+            const imgElement = document.getElementById('personImage');
+
+            // Load image with a slight CSS crop if it's AI-generated
+            imgElement.style.clipPath = isAIGenerated ? "inset(5% 5% 5% 5%)" : "none";
+            imgElement.src = imageUrl;
+            
+            // Reset UI elements
+            document.getElementById('result').textContent = "";
+            document.getElementById('nextButton').style.display = "none";
+        }
+
+        function makeGuess(guess) {
+            const result = document.getElementById('result');
+            if ((guess === 'ai' && isAIGenerated) || (guess === 'real' && !isAIGenerated)) {
+                result.textContent = "Correct!";
+                result.style.color = "green";
+            } else {
+                result.textContent = "Wrong! Try again.";
+                result.style.color = "red";
+            }
+            document.getElementById('nextButton').style.display = "block";
+        }
+
+        function nextImage() {
+            loadImage();
+        }
+
+        // Load the first image when the page loads
+        window.onload = loadImage;
+    </script>
+</body>
+</html>
