@@ -58,12 +58,19 @@
             margin-top: 20px;
             display: none;
         }
+
+        #loadingMessage {
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Is this a real person or AI generated?</h1>
-        <img id="personImage" src="" alt="Person" />
+        <div id="loadingMessage">Loading...</div>
+        <img id="personImage" src="" alt="Person" style="display: none;"/>
         <div class="buttons">
             <button onclick="makeGuess('real')">Real</button>
             <button onclick="makeGuess('ai')">AI-generated</button>
@@ -79,16 +86,32 @@
             // Randomly decide if this is a real or AI-generated image
             isAIGenerated = Math.random() < 0.5;
 
-            const imageUrl = 'https://thispersondoesnotexist.com/';
+            // Use real or AI image sources here
+            const imageUrl = isAIGenerated 
+                ? 'https://thispersondoesnotexist.com/' 
+                : 'https://randomuser.me/api/portraits/men/1.jpg'; // Example for real images
             const imgElement = document.getElementById('personImage');
 
+            // Display loading message
+            document.getElementById('loadingMessage').style.display = "block";
+            imgElement.style.display = "none";
+            
             // Load image with a slight CSS crop if it's AI-generated
             imgElement.style.clipPath = isAIGenerated ? "inset(10% 10% 10% 10%)" : "none";
             imgElement.src = imageUrl;
-            
+
             // Reset UI elements
             document.getElementById('result').textContent = "";
             document.getElementById('nextButton').style.display = "none";
+
+            // Wait for image to load, then remove loading message
+            imgElement.onload = () => {
+                document.getElementById('loadingMessage').style.display = "none";
+                imgElement.style.display = "block";
+            };
+            imgElement.onerror = () => {
+                document.getElementById('loadingMessage').textContent = "Failed to load image. Please try again.";
+            };
         }
 
         function makeGuess(guess) {
