@@ -19,11 +19,17 @@
             text-align: center;
         }
 
+        #personImageContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
         #personImage {
             width: 300px;
             height: 300px;
             object-fit: cover;
-            margin-bottom: 20px;
             display: none; /* Initially hidden until loaded */
         }
 
@@ -62,7 +68,7 @@
         #loadingMessage {
             font-size: 16px;
             color: #666;
-            margin-bottom: 20px; /* Added margin for spacing */
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -70,7 +76,9 @@
     <div class="container">
         <h1>Is this a real person or AI generated?</h1>
         <div id="loadingMessage">Loading...</div>
-        <img id="personImage" src="" alt="Person" />
+        <div id="personImageContainer">
+            <img id="personImage" src="" alt="Person" />
+        </div>
         <div class="buttons">
             <button onclick="makeGuess('real')">Real</button>
             <button onclick="makeGuess('ai')">AI-generated</button>
@@ -92,9 +100,9 @@
             // Set image source based on AI or real selection
             let imageUrl;
             if (isAIGenerated) {
-                imageUrl = 'https://thispersondoesnotexist.com/';
-                imgElement.style.clipPath = "inset(10% 10% 10% 10%)"; // Crop for AI image
-                imgElement.style.borderRadius = "15px"; // Rounded corners for AI image
+                imageUrl = 'https://thispersondoesnotexist.com/image';
+                imgElement.style.clipPath = "inset(10% 10% 10% 10%)"; // Slight crop for AI image
+                imgElement.style.borderRadius = "20px"; // Rounded corners for AI image
             } else {
                 const randomNum = Math.floor(Math.random() * 100) + 1; // Random number between 1 and 100
                 imageUrl = `https://randomuser.me/api/portraits/men/${randomNum}.jpg`;
@@ -102,7 +110,7 @@
                 imgElement.style.borderRadius = "0"; // Square corners for real image
             }
             
-            // Display loading message
+            // Display loading message and hide image while it loads
             loadingMessage.style.display = "block";
             imgElement.style.display = "none";
             imgElement.src = imageUrl;
@@ -111,7 +119,7 @@
             document.getElementById('result').textContent = "";
             document.getElementById('nextButton').style.display = "none";
 
-            // Wait for image to load, then hide loading message
+            // Wait for image to load, then hide loading message and show image
             imgElement.onload = () => {
                 loadingMessage.style.display = "none";
                 imgElement.style.display = "block";
