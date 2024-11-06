@@ -104,8 +104,9 @@
                 imgElement.style.clipPath = "inset(10% 10% 10% 10%)"; // Slight crop for AI image
                 imgElement.style.borderRadius = "20px"; // Rounded corners for AI image
             } else {
-                // Fetch a random high-quality human image from Picsum Photos API
-                imageUrl = 'https://picsum.photos/seed/' + Math.floor(Math.random() * 1000) + '/300/300'; // Random human-like image from Picsum
+                // Fetch a random high-quality human image from Unsplash API
+                const randomHumanImageUrl = `https://source.unsplash.com/300x300/?portrait,people`; // Unsplash random portrait URL
+                imageUrl = randomHumanImageUrl; // Corrected real human image URL
                 imgElement.style.clipPath = "none"; // No crop for real image
                 imgElement.style.borderRadius = "0"; // Square corners for real image
             }
